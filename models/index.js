@@ -10,5 +10,11 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.User = require('./user.js')(sequelize, Sequelize)
+db.Notice = require('./notice.js')(sequelize, Sequelize)
+db.NoticeLike = require('./noticeLike.js')(sequelize, Sequelize)
+db.Study = require('./study.js')(sequelize, Sequelize)
+db.StudyGroup = require('./studyGroup.js')(sequelize, Sequelize)
+db.teacherGroup = require('./teacherGroup.js')(sequelize, Sequelize)
+db.StudyGroupCheck = require('./studyGroupCheck.js')(sequelize, Sequelize)
 
 module.exports = db
