@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         studyGroup_id: {
             type: DataTypes.INTEGER,
-            unique: true,
             reference:{
                 model: "studyGroup",
                 key: "id"
