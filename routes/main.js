@@ -5,30 +5,38 @@ var async = require('async')
 
 
 /* GET home page. */
-router.get('/main', async function (req, res, next) {
+router.get('/', async function (req, res, next) {
     var info_list = [];
-    var query = 'select title, header, writer, date, like from Notice LIMIT 2'
-    const data = await db.sequelize.query(query, { replacements: values });
+    var query = 'select title, header, writer, date from doit.notice order by date desc'
+    var data = await db.sequelize.query(query, {type: db.sequelize.QueryTypes.SELECT});
+    var count=0;
     for (var s of data) {
+        if(count===2){
+            break;
+        }
         info_list.push({
             header: s.header,
             title: s.title,
             writer: s.writer,
-            date: s.date,
-            like: s.like
+            date: s.date
         });
+        count++;
     }
     var study_list = [];
-    var query = 'select title, header, teacher, date, student_num from Study LIMIT 2'
-    data = await db.sequelize.query(query, { replacements: values })
+    query = 'select title, header, date, student_num from doit.study order by date desc'
+    data = await db.sequelize.query(query, {type: db.sequelize.QueryTypes.SELECT});
+    count=0;
     for (var s of data) {
+        if(count===2){
+            break;
+        }
         study_list.push({
             header: s.header,
             title: s.title,
-            teacher: s.teacher,
             date: s.date,
             student_num: s.student_num,
         });
+        count++;
     }
     res.json({ success: true, info_list: info_list, study_list: study_list })
 });
