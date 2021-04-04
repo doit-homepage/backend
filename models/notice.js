@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         writer: {
             type: DataTypes.STRING(64),
-            unique: true,
             reference:{
                 model: "user",
                 key: "id"
