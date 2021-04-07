@@ -7,7 +7,7 @@ var async = require('async')
 /* GET home page. */
 router.get('/', async function (req, res, next) {
     var info_list = [];
-    var query = 'select title, header, writer, date from doit.notice order by date desc'
+    var query = 'select notice.id, title, header, writer, date, count(notice_id) as cnt from doit.notice left join doit.noticeLike on doit.notice.id = doit.noticeLike.notice_id  group by doit.notice.id'
     var data = await db.sequelize.query(query, {type: db.sequelize.QueryTypes.SELECT});
     var count=0;
     for (var s of data) {
@@ -18,7 +18,8 @@ router.get('/', async function (req, res, next) {
             header: s.header,
             title: s.title,
             writer: s.writer,
-            date: s.date
+            date: s.date,
+            like: s.cnt
         });
         count++;
     }

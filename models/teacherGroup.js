@@ -10,14 +10,14 @@ module.exports = (sequelize, DataTypes) => {
         },
         teacher_id: {
             type: DataTypes.STRING(64),
-            reference:{
+            references:{
                 model: "user",
                 key: "id"
             }
         },
         study_id: {
             type: DataTypes.INTEGER,
-            reference:{
+            references:{
                 model: "study",
                 key: "id"
             }
