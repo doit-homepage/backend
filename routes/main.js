@@ -24,19 +24,29 @@ router.get('/', async function (req, res, next) {
         count++;
     }
     var study_list = [];
-    query = 'select title, header, date, student_num from doit.study order by date desc'
+    query = 'select id,title, header, date, student_num from doit.study order by date desc'
     data = await db.sequelize.query(query, {type: db.sequelize.QueryTypes.SELECT});
     count=0;
     for (var s of data) {
         if(count===2){
             break;
         }
+        var value = {
+            id : s.id
+        }
+        queryTeacher= 'select user.name from doit.teacherGroup inner join doit.user on teacher_id = user.id where teacherGroup.study_id=:id'
+        da=await db.sequelize.query(queryTeacher, {type: db.sequelize.QueryTypes.SELECT, replacements: value});
         study_list.push({
             header: s.header,
             title: s.title,
             date: s.date,
             student_num: s.student_num,
+            teacher: []
         });
+        for(var t of da){
+            study_list[count].teacher.push(t);
+        }
+        
         count++;
     }
     res.json({ success: true, info_list: info_list, study_list: study_list })
