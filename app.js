@@ -11,6 +11,7 @@ var mypageRouter = require('./routes/mypage');
 var infoRouter = require('./routes/info')
 var studyRouter = require('./routes/study')
 var mainRouter = require('./routes/main')
+var authRouter = require('./routes/auth.js')
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use('/mypage', mypageRouter);
 app.use('/info', infoRouter);
 app.use('/study', studyRouter);
 app.use('/main', mainRouter);
+app.use('/auth', authRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

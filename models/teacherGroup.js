@@ -10,16 +10,14 @@ module.exports = (sequelize, DataTypes) => {
         },
         teacher_id: {
             type: DataTypes.STRING(64),
-            unique: true,
-            reference:{
+            references:{
                 model: "user",
                 key: "id"
             }
         },
         study_id: {
             type: DataTypes.INTEGER,
-            unique: true,
-            reference:{
+            references:{
                 model: "study",
                 key: "id"
             }
