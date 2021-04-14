@@ -44,8 +44,10 @@ router.get('/', async function (req, res, next) {
             teacher: []
         });
         for(var t of da){
-            study_list[count].teacher.push(t);
+            study_list[count].teacher.push(t['name']);
+            study_list[count].teacher.push(", ");
         }
+        study_list[count].teacher.pop();
         
         count++;
     }
