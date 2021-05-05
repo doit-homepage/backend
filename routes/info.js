@@ -5,87 +5,85 @@ const db = require('../models');
 const notice = require('../models/notice');
 var router = express.Router();
 
-var Notice = db.Notice('../modesl/notice');
-var NoticeLike = db.NoticeLike('../models/noticeLike');
+var Notice = db.Notice;
+var NoticeLike = db.NoticeLike;
 
 /* GET home page. */
 
 /* 공지사항 상세조회*/
+/*
 router.get('/:id',function(req,res,next)
 {
   var values ={
-    id: decoded.id
+    id: params.id
   }
 
   var NoticeDetailData = []
   var query = "select notice.title, notice.header, notice.writer, notice.date , notice.content, notice.picture, notice.file from doit.notice where notice.id = :id";
   await db.sequelize.query(query,{replacements: values}).spread(async function (results, subdata){
     for(var s of subdata){
+
       NoticeDetailData.push({
 
-        title: notice.title,
-        header: notice.header,
-        writer: notice.writer,
-        date: notice.date,
-        content: notice.content,
-        picture: notice.picture,
-        file: notice.file
+        title: s.title,
+        header: s.header,
+        writer: s.writer,
+        date: s.date,
+        content: s.content,
+        picture: s.picture,
+        file: s.file
       })
+      
+      res.json({sucess: true, data: NoticeDetailData})
     
     }
   })
-
+*/
 
 /*좋아요 등록*/
-router.post ('/like', function (req, res, next){
-  var query = "select notice.id, title, header, writer, date, count(notice_id) from doit.notice left join doit.noticeLike on doit.notice.id = doit.noticeLike.notice_id  where notice.id = :id group by doit.notice.id"
+router.post ('/like', async function (req, res, next){
   
   var user_id = req.body.userid
   var notice_id = req.body.noticeid
   
-
   let variable  = { user_id: req.body.userid, notice_id: req.body.noticeid };
   
   try {
 
-    const post = await Post.findOne({ where: { id: req.body.userid } });
+    const Notice = await NoticeLike.findOne({ where: { user_id: req.body.userid, notice_id: req.body.notice_id } });
     
-    await post.addLiker(req.body.noticeid);
-    
-    res.send('OK');
-    
-    } catch (error) {
-    
-    console.error(error);
-    
-    next(error);
-    
+    if(NoticeLike.length() == 0){
+      NoticeLike.create({user_id: req.body.userid , notice_id: req.body.noticeid})
+      res.json({success : true})
     }
+    
+    else{
+      res.send({err: '이미 좋아요를 했습니다.'})
+    }
+  } catch (err){
 
+  }
 });
 
-});
 
 /*좋아요 취소 */
 
-router.delete('/like/:id', function (req, res, next){
+router.delete('/like/:id', async function (req, res, next){
 
   try {
-
-    const post = await Post.findOne({ where: { id: req.notice.id } });
+    const Notice = await NoticeLike.findOne({ where: { user_id: req.body.userid, notice_id: req.body.notice_id } });
     
-    await post.removeLiker(req.user.id);
-    
-    res.send('OK');
-    
-    } catch (error) {
-    
-    console.error(error);
-    
-    next(error);
-    
+    if(NoticeLike.length() == 0){
+      res.send({err: '...'})
     }
+    else{
+      NoticeLike.delete({user_id: req.body.userid , notice_id: req.body.noticeid})
+      res.json({success : false})
+    }
+  }catch (err) { 
 
+  }
+    
   
 });
 

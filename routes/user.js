@@ -13,10 +13,6 @@ var User = db.User
 router.post('/', function (req, res, next) {
   var salt = Math.round((new Date().valueOf() * Math.random()))
   req.body.pw = crypto.createHash('sha512').update(req.body.pw + salt).digest('hex')
-<<<<<<< HEAD
-  
-=======
->>>>>>> 84bb5448828ea898d4680ea4df988e9703ccd1d4
   User.create({ id: req.body.id, 
     pw: req.body.pw, 
     name: req.body.name, 
@@ -28,10 +24,6 @@ router.post('/', function (req, res, next) {
     email: req.body.email,
     isAdmin: false,
     salt: salt })
-<<<<<<< HEAD
-    
-=======
->>>>>>> 84bb5448828ea898d4680ea4df988e9703ccd1d4
     .then((data) => { res.json({ success: true, data }) })
     .catch((err) => {
       if (err) return res.json({ success: false, err })
