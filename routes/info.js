@@ -7,11 +7,12 @@ var async = require('async')
 
 var sequelize = require('sequelize')
 
-var notice = db.notice
+var Notice = db.Notice
 
 /* GET home page. */
 router.post('/', function (req, res, next) {
-  notice.create({ 
+  console.log("post");
+  Notice.create({ 
     title: req.body.title, 
     header: req.body.header, 
     content: req.body.content, 
