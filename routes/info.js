@@ -4,6 +4,14 @@ const { token } = require('morgan');
 const db = require('../models');
 const notice = require('../models/notice');
 var router = express.Router();
+var db = require('../models/index')
+var crypto = require('crypto')
+var jwt = require('jsonwebtoken')
+var async = require('async')
+
+var sequelize = require('sequelize')
+
+var Notice = db.Notice
 
 var Notice = db.Notice;
 var NoticeLike = db.NoticeLike;
@@ -90,5 +98,20 @@ router.delete('/like/:id', async function (req, res, next){
 
 
 
+
+router.post('/', function (req, res, next) {
+  console.log("post");
+  Notice.create({ 
+    title: req.body.title, 
+    header: req.body.header, 
+    content: req.body.content, 
+    date: req.body.date,
+    writer: req.body.writer,
+  })
+    .then((data) => { res.json({ success: true, data }) })
+    .catch((err) => {
+      if (err) return res.json({ success: false, err })
+    })
+});
 
 module.exports = router;
