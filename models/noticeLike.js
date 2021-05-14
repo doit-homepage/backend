@@ -6,7 +6,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
-            unique: true
+            unique: true,
+            autoIncrement: true
         },
         user_id: {
             type: DataTypes.STRING(64),
@@ -17,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         notice_id: {
             type: DataTypes.INTEGER,
-            reference:{
+            references:{
                 model: "notice",
                 key: "id"
             }

@@ -6,7 +6,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
-            unique: true
+            unique: true,
+            autoIncrement: true
         },
         title: {
             type: DataTypes.STRING(150),
@@ -17,8 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         writer: {
             type: DataTypes.STRING(64),
-            unique: true,
-            reference:{
+            references:{
                 model: "user",
                 key: "id"
             }

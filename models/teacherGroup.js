@@ -6,18 +6,19 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
-            unique: true
+            unique: true,
+            autoIncrement: true
         },
         teacher_id: {
             type: DataTypes.STRING(64),
-            reference:{
+            references:{
                 model: "user",
                 key: "id"
             }
         },
         study_id: {
             type: DataTypes.INTEGER,
-            reference:{
+            references:{
                 model: "study",
                 key: "id"
             }
