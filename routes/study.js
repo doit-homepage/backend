@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 var express = require('express');
 const study = require('../models/study');
-=======
-var express = require("express");
-const study = require("../models/study");
->>>>>>> 052313e445c0eb67bb4c25eaf7891e759de25b22
 var router = express.Router();
 var db = require('../models/index')
 var crypto = require('crypto')
@@ -64,7 +59,7 @@ router.post('/', function (req, res, next) {
 module.exports = router;
 
 /* /study/list/:page */ //스터디 목록 조회
-router.get('list/:page', function(req, res, next) {
+router.get('list/:page', async function(req, res, next) {
   var study_list = [];
     var query = 'select title, header, content, start_date, end_date, student_num, date from doit.study where study.id'
     var study_data = await db.sequelize.query(query, {type: db.sequelize.QueryTypes.SELECT});
