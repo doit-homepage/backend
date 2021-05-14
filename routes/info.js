@@ -11,7 +11,7 @@ var NoticeLike = db.NoticeLike;
 /* GET home page. */
 
 /* 공지사항 상세조회*/
-/*
+
 router.get('/:id',function(req,res,next)
 {
   var values ={
@@ -38,7 +38,7 @@ router.get('/:id',function(req,res,next)
     
     }
   })
-*/
+
 
 /*좋아요 등록*/
 router.post ('/like', async function (req, res, next){
