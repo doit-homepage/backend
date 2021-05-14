@@ -60,7 +60,6 @@ router.post('/like', async function (req, res, next) {
 
 
 /*좋아요 취소 */
-
 router.delete('/like/:id', async function (req, res, next) {
   const Notice = await NoticeLike.findOne({ where: { user_id: req.body.userid, notice_id: req.body.notice_id } });
   if (NoticeLike.length() == 0) {
@@ -70,8 +69,6 @@ router.delete('/like/:id', async function (req, res, next) {
     NoticeLike.delete({ user_id: req.body.userid, notice_id: req.body.noticeid })
     res.json({ success: false })
   }
-
-
 });
 
 router.post('/', function (req, res, next) {
