@@ -16,13 +16,13 @@ var NoticeLike = db.NoticeLike;
 
 router.get("/:id", async function (req, res, next) {
   var values = {
-    id: params.id,
+    id: Number(req.params.id),
   };
-
   var NoticeDetailData = [];
   var query =
     "select notice.title, notice.header, notice.writer, notice.date , notice.content, notice.picture, notice.file from doit.notice where notice.id = :id";
-  var data = await db.sequelize.query(query, { replacements: values });
+  var data = await db.sequelize.query(query, { replacements: values , type: db.sequelize.QueryTypes.SELECT});
+  console.log(data)
   for (var s of data) {
     NoticeDetailData.push({
       title: s.title,
@@ -34,6 +34,7 @@ router.get("/:id", async function (req, res, next) {
       file: s.file,
     });
   }
+  console.log(NoticeDetailData)
   res.json({ success: true, data: NoticeDetailData });
 });
 
