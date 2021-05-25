@@ -1,78 +1,64 @@
-var express = require('express');
-const { decode } = require('jsonwebtoken');
-const { token } = require('morgan');
-const db = require('../models');
-const notice = require('../models/notice');
+var express = require("express");
+const { decode } = require("jsonwebtoken");
+const { token } = require("morgan");
+const db = require("../models");
 var router = express.Router();
-var crypto = require('crypto')
-var jwt = require('jsonwebtoken')
-var async = require('async')
-
-var sequelize = require('sequelize')
-const { decode } = require('punycode');
-var Notice = db.Notice
+var crypto = require("crypto");
+var jwt = require("jsonwebtoken");
+var async = require("async");
+var sequelize = require("sequelize");
+var Notice = db.Notice;
 var NoticeLike = db.NoticeLike;
 
 /* GET home page. */
 
 /* 공지사항 상세조회*/
-/*
-router.get('/:id',function(req,res,next)
-{
-  var values ={
-    id: params.id
+
+router.get("/:id", async function (req, res, next) {
+  var values = {
+    id: params.id,
+  };
+
+  var NoticeDetailData = [];
+  var query =
+    "select notice.title, notice.header, notice.writer, notice.date , notice.content, notice.picture, notice.file from doit.notice where notice.id = :id";
+  var data = await db.sequelize.query(query, { replacements: values });
+  for (var s of data) {
+    NoticeDetailData.push({
+      title: s.title,
+      header: s.header,
+      writer: s.writer,
+      date: s.date,
+      content: s.content,
+      picture: s.picture,
+      file: s.file,
+    });
   }
-
-  var NoticeDetailData = []
-  var query = "select notice.title, notice.header, notice.writer, notice.date , notice.content, notice.picture, notice.file from doit.notice where notice.id = :id";
-  await db.sequelize.query(query,{replacements: values}).spread(async function (results, subdata){
-    for(var s of subdata){
-
-      NoticeDetailData.push({
-
-        title: s.title,
-        header: s.header,
-        writer: s.writer,
-        date: s.date,
-        content: s.content,
-        picture: s.picture,
-        file: s.file
-      })
-      
-      res.json({sucess: true, data: NoticeDetailData})
-    
-    }
-  })
-*/
-
-/*좋아요 등록*/
-router.post('/like', async function (req, res, next) {
-  const data = await NoticeLike.findOne({ where: { user_id: req.body.userid, notice_id: req.body.notice_id } });
-  console.log(data)
-  if (data == null) {
-    NoticeLike.create({ user_id: req.body.userid, notice_id: req.body.notice_id })
-    res.json({ success: true })
-  }
-  else {
-    res.send({ err: '이미 좋아요를 했습니다.' })
-  }
+  res.json({ success: true, data: NoticeDetailData });
 });
 
-
-/*좋아요 취소 */
-router.delete('/like/:id', async function (req, res, next) {
-  const Notice = await NoticeLike.findOne({ where: { user_id: req.body.userid, notice_id: req.body.notice_id } });
-  if (NoticeLike.length() == 0) {
-    res.send({ err: '...' })
-  }
-  else {
-    NoticeLike.delete({ user_id: req.body.userid, notice_id: req.body.noticeid })
-    res.json({ success: false })
+/*좋아요 등록*/
+router.post("/like", async function (req, res, next) {
+  const data = await NoticeLike.findOne({
+    where: { user_id: req.body.userid, notice_id: req.body.notice_id },
+  });
+  console.log(data);
+  if (data == null) {
+    NoticeLike.create({
+      user_id: req.body.userid,
+      notice_id: req.body.notice_id,
+    });
+    res.json({ success: true });
+  } else {
+    NoticeLike.delete({
+      user_id: req.body.userid,
+      notice_id: req.body.notice_id,
+    });
+    res.json({ success: false });
   }
 });
 
 router.post('/', function (req, res, next) {
-
   var token = req.headers['x-access-token']
   jwt.verify(token, process.env.JWT_KEY, function (err, decoded) {
     Notice.create({
