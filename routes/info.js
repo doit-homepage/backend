@@ -66,11 +66,10 @@ router.post('/', function (req, res, next) {
       content: req.body.content,
       date: req.body.date,
       writer: decoded.id
-  })
-      .then((data) => { res.json({ success: true, data }) })
-      .catch((err) => {
-        if (err) return res.json({ success: false, err })
-      })
+    }).then((data) => { res.json({ success: true, data }) })
+    .catch((err) => {
+      if (err) return res.json({ success: false, err })
+    })
 
   })
 });
