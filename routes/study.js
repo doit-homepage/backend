@@ -44,13 +44,18 @@ router.get("/study/:id", async function (req, res, next) {
 
 router.post('/', function (req, res, next) {
   var token = req.headers['x-access-token']
+  console.log(token)
   jwt.verify(token, process.env.JWT_KEY, function (err, decoded) {
     console.log("post");
+    var date = new Date();
+    console.log(date)
     Study.create({
       title: req.body.title,
       header: req.body.header,
       content: req.body.content,
-      date: req.body.date,
+      start_date:req.body.start_date,
+      end_date: req.body.end_date,
+      date: date,
       writer: decoded.id,
       student_num: req.body.student_num
     })

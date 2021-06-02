@@ -9,7 +9,7 @@ var jwt = require('jsonwebtoken')
 var async = require('async')
 
 var sequelize = require('sequelize')
-const { decode } = require('punycode');
+
 var Notice = db.Notice
 var NoticeLike = db.NoticeLike;
 
