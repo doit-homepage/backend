@@ -13,8 +13,11 @@ module.exports = (io) => {
         });
         socket.on('create',room=>{
             console.log(room)
-            let clientsInRoom = io.sockets.adapter.rooms[room];
-            let numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
+            let clientsInRoom = io.sockets.adapter.rooms.get(room);
+            //let numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
+            let numClients = clientsInRoom ? clientsInRoom.size : 0;
+
+            console.log(clientsInRoom, numClients)
             log('Room ' + room + ' now has ' + numClients + ' client(s)');
     
             if(numClients === 0){
