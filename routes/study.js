@@ -17,9 +17,10 @@ router.get("/", function (req, res, next) {
 });
 
 /*스터디 상세조회 */
-router.get("/study/:id", async function (req, res, next) {
+
+router.get("/:id", async function (req, res, next) {
   var values = {
-    id: params.id,
+    id: Number(req.params.id),
   };
 
   var StudyDetailData = [];
