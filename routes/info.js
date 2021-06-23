@@ -3,6 +3,7 @@ const { decode } = require("jsonwebtoken");
 const { token } = require("morgan");
 const db = require("../models");
 var router = express.Router();
+
 var crypto = require("crypto");
 var jwt = require("jsonwebtoken");
 var async = require("async");
@@ -18,10 +19,10 @@ router.get("/:id", async function (req, res, next) {
   var values = {
     id: Number(req.params.id),
   };
-
   var NoticeDetailData = [];
   var query =
     "select notice.title, notice.header, notice.writer, notice.date , notice.content, notice.picture, notice.file from doit.notice where notice.id = :id";
+
   var data = await db.sequelize.query(query, {
     replacements: values,
     type: db.sequelize.QueryTypes.SELECT,

@@ -14,7 +14,6 @@ var mainRouter = require('./routes/main')
 var authRouter = require('./routes/auth.js')
 
 var app = express();
-
 var sequelize = require('./models').sequelize;
 
 // view engine setup
