@@ -22,7 +22,11 @@ router.get("/:id", async function (req, res, next) {
   var NoticeDetailData = [];
   var query =
     "select notice.title, notice.header, notice.writer, notice.date , notice.content, notice.picture, notice.file from doit.notice where notice.id = :id";
-  var data = await db.sequelize.query(query, { replacements: values , type: db.sequelize.QueryTypes.SELECT});
+
+  var data = await db.sequelize.query(query, {
+    replacements: values,
+    type: db.sequelize.QueryTypes.SELECT,
+  });
   for (var s of data) {
     NoticeDetailData.push({
       title: s.title,
@@ -34,6 +38,7 @@ router.get("/:id", async function (req, res, next) {
       file: s.file,
     });
   }
+  console.log(NoticeDetailData);
   res.json({ success: true, data: NoticeDetailData });
 });
 
@@ -58,21 +63,23 @@ router.post("/like", async function (req, res, next) {
   }
 });
 
-router.post('/', function (req, res, next) {
-  var token = req.headers['x-access-token']
+router.post("/", function (req, res, next) {
+  var token = req.headers["x-access-token"];
   jwt.verify(token, process.env.JWT_KEY, function (err, decoded) {
     Notice.create({
       title: req.body.title,
       header: req.body.header,
       content: req.body.content,
       date: req.body.date,
-      writer: decoded.id
-    }).then((data) => { res.json({ success: true, data }) })
-    .catch((err) => {
-      if (err) return res.json({ success: false, err })
+      writer: decoded.id,
     })
-
-  })
+      .then((data) => {
+        res.json({ success: true, data });
+      })
+      .catch((err) => {
+        if (err) return res.json({ success: false, err });
+      });
+  });
 });
 
 module.exports = router;

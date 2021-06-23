@@ -1,15 +1,15 @@
 var express = require('express');
 const study = require('../models/study');
 var router = express.Router();
-var db = require('../models/index')
-var crypto = require('crypto')
-var jwt = require('jsonwebtoken')
-var async = require('async')
+var db = require("../models/index");
+var crypto = require("crypto");
+var jwt = require("jsonwebtoken");
+var async = require("async");
 
-var sequelize = require('sequelize');
-const { decode } = require('punycode');
+var sequelize = require("sequelize");
+const { decode } = require("punycode");
 
-var Study = db.Study
+var Study = db.Study;
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -17,9 +17,10 @@ router.get("/", function (req, res, next) {
 });
 
 /*스터디 상세조회 */
-router.get("/study/:id", async function (req, res, next) {
+
+router.get("/:id", async function (req, res, next) {
   var values = {
-    id: decoded.id,
+    id: Number(req.params.id),
   };
 
   var StudyDetailData = [];
@@ -40,11 +41,10 @@ router.get("/study/:id", async function (req, res, next) {
     });
   }
   res.json({ sucess: true, data: StudyDetailData });
-})
+});
 
-router.post('/', function (req, res, next) {
-  var token = req.headers['x-access-token']
-  console.log(token)
+router.post("/", function (req, res, next) {
+  var token = req.headers["x-access-token"];
   jwt.verify(token, process.env.JWT_KEY, function (err, decoded) {
     console.log("post");
     var date = new Date();
@@ -57,13 +57,15 @@ router.post('/', function (req, res, next) {
       end_date: req.body.end_date,
       date: date,
       writer: decoded.id,
-      student_num: req.body.student_num
+      student_num: req.body.student_num,
     })
-      .then((data) => { res.json({ success: true, data }) })
-      .catch((err) => {
-        if (err) return res.json({ success: false, err })
+      .then((data) => {
+        res.json({ success: true, data });
       })
-  })
+      .catch((err) => {
+        if (err) return res.json({ success: false, err });
+      });
+  });
 });
 
 module.exports = router;
